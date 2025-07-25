@@ -298,6 +298,14 @@ sql_translation.Snowflake <- function(con) {
 
         sql_expr(DATEDIFF(DAY, !!time2, !!time1))
       },
+      max_by = function(x, y, n) {
+        glue_sql2(
+          sql_current_con(),
+          glue(
+            "TO_NUMBER(MAX_BY({x}, {y})[{n} - 1.0])"
+          )
+        )
+      },
       # LEAST / GREATEST on Snowflake will not respect na.rm = TRUE by default (similar to Oracle/Access)
       # https://docs.snowflake.com/en/sql-reference/functions/least
       # https://docs.snowflake.com/en/sql-reference/functions/greatest
@@ -325,12 +333,6 @@ sql_translation.Snowflake <- function(con) {
       all = sql_aggregate("BOOLAND_AGG", "all"),
       any = sql_aggregate("BOOLOR_AGG", "any"),
       sd = sql_aggregate("STDDEV", "sd"),
-      max_by = function(x, y, n) {
-        glue_sql2(
-          sql_current_con(),
-          glue("TO_NUMBER(MAX_BY({x}, {y})[{n} - 1.0])")
-        )
-      },
       str_flatten = function(x, collapse = "") {
         sql_expr(LISTAGG(!!x, !!collapse))
       }

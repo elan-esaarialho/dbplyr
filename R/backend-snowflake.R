@@ -310,7 +310,7 @@ sql_translation.Snowflake <- function(con) {
           glue_sql2(
             sql_current_con(),
             glue(
-              "TO_NUMBER(MAX_BY({x}, {y})[{n} - 1.0])"
+              "TO_NUMBER(MAX_BY({x}, {y})[{n} - 1])"
             )
           )
         }
